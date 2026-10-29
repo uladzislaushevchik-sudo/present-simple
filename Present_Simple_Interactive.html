@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1565c0">
+<title>Present Simple · affirmatives, negatives, questions + to be</title>
+<style>
+:root {
+  --p: #1565c0; --p2: #1976d2; --s: #2e7d32; --e: #c62828; --w: #ef6c00;
+  --bg: #f0f4fa; --c: #fff; --t: #1a2332; --m: #5a6577; --b: #c5d0de;
+  --ok-bg: rgba(46,125,50,.12); --bad-bg: rgba(198,40,40,.12);
+}
+[data-theme=dark] {
+  --p: #64b5f6; --p2: #42a5f5; --s: #66bb6a; --e: #ef5350; --w: #ffb74d;
+  --bg: #0f1419; --c: #1a2332; --t: #e8eef4; --m: #9aa8b8; --b: #2a3544;
+  --ok-bg: rgba(102,187,106,.15); --bad-bg: rgba(239,83,80,.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+button, input, select { font-family: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg); color: var(--t); line-height: 1.45;
+  padding-bottom: 70px; min-height: 100vh;
+}
+header {
+  background: linear-gradient(135deg, #0d47a1, #1565c0 55%, #0288d1);
+  color: #fff; padding: 15px 12px 11px; text-align: center;
+  position: sticky; top: 0; z-index: 30;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+header h1 { font-size: 1.18rem; font-weight: 700; }
+header p { opacity: .9; font-size: .76rem; margin-top: 3px; }
+.tools { margin-top: 7px; }
+.tools button {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35);
+  color: #fff; padding: 5px 11px; border-radius: 16px;
+  font-size: .71rem; font-weight: 600; margin: 0 2px;
+}
+.tabs {
+  display: flex; flex-wrap: wrap; gap: 5px; padding: 9px 6px;
+  justify-content: center; background: var(--c);
+  border-bottom: 1px solid var(--b); position: sticky; top: 0; z-index: 20;
+}
+.tab {
+  padding: 6px 10px; border: 2px solid var(--b); border-radius: 18px;
+  background: var(--c); font-size: .7rem; font-weight: 600; color: var(--p);
+}
+.tab.active { background: var(--p); color: #fff; border-color: var(--p); }
+.sec { display: none; max-width: 720px; margin: 0 auto; padding: 10px 12px 24px; }
+.sec.active { display: block; }
+.card {
+  background: var(--c); border-radius: 12px; padding: 14px;
+  margin-bottom: 11px; border: 1px solid var(--b);
+}
+.card h2 { font-size: .98rem; color: var(--p); margin-bottom: 6px; }
+.hint { font-size: .77rem; color: var(--m); margin-bottom: 10px; }
+.rule {
+  padding: 10px; border-radius: 8px; margin-bottom: 8px;
+  border-left: 5px solid var(--p); background: var(--bg); font-size: .86rem;
+}
+.rule b { display: block; margin-bottom: 3px; color: var(--p); }
+.ex { font-style: italic; color: var(--m); font-size: .8rem; margin-top: 3px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.box { background: var(--bg); border-radius: 8px; padding: 10px; font-size: .82rem; }
+.box b { color: var(--p); }
+.q-item { padding: 12px 0; border-bottom: 1px solid var(--b); }
+.q-item:last-child { border-bottom: none; }
+.q-num { font-size: .7rem; font-weight: 700; color: var(--p); margin-bottom: 4px; }
+.q-text { font-weight: 600; font-size: .93rem; margin-bottom: 8px; line-height: 1.4; }
+.opts { display: flex; flex-direction: column; gap: 5px; }
+.opt {
+  padding: 10px 12px; border: 2px solid var(--b); border-radius: 8px;
+  background: var(--c); text-align: left; font-size: .87rem; font-weight: 500;
+}
+.opt:hover { border-color: var(--p); }
+.opt.selected { border-color: var(--p); background: rgba(21,101,192,.08); }
+[data-theme=dark] .opt.selected { background: rgba(100,181,246,.12); }
+.opt.ok { border-color: var(--s); background: var(--ok-bg); color: var(--s); }
+.opt.bad { border-color: var(--e); background: var(--bad-bg); color: var(--e); }
+.opt:disabled { pointer-events: none; }
+.fb { font-size: .79rem; margin-top: 6px; min-height: 1.15em; }
+.fb.ok { color: var(--s); }
+.fb.bad { color: var(--e); }
+.btn {
+  padding: 10px 15px; border: none; border-radius: 8px;
+  background: var(--p); color: #fff; font-weight: 600; font-size: .86rem; margin: 3px 2px;
+}
+.btn.sec { background: var(--c); color: var(--p); border: 2px solid var(--b); }
+.score { text-align: center; font-weight: 700; font-size: 1.08rem; margin: 11px 0 4px; }
+.progress-bar {
+  height: 8px; background: var(--b); border-radius: 4px; overflow: hidden; margin: 8px 0 4px;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--p), var(--s));
+  border-radius: 4px; transition: width .3s;
+}
+.sticky-actions {
+  position: sticky; bottom: 0; background: var(--c); border-top: 1px solid var(--b);
+  padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; z-index: 15;
+}
+.gap-wrap {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  margin: 6px 0; font-size: .93rem; line-height: 1.75;
+}
+.gap-wrap select, .gap-wrap input {
+  padding: 6px 8px; border: 2px solid var(--b); border-radius: 6px;
+  background: var(--c); font-size: .86rem; min-width: 90px;
+}
+.gap-wrap select.ok, .gap-wrap input.ok { border-color: var(--s); }
+.gap-wrap select.bad, .gap-wrap input.bad { border-color: var(--e); }
+.err-box {
+  background: var(--bg); border-radius: 8px; padding: 10px 12px;
+  margin: 6px 0; font-size: .9rem;
+}
+.err-box .wrong { color: var(--e); text-decoration: line-through; margin-right: 6px; }
+.order-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.chip {
+  padding: 8px 12px; border: 2px solid var(--b); border-radius: 20px;
+  background: var(--c); font-size: .85rem; font-weight: 600;
+}
+.chip.on { border-color: var(--p); background: rgba(21,101,192,.1); color: var(--p); }
+.chip.used { opacity: .35; pointer-events: none; }
+.chip.ok { border-color: var(--s); background: var(--ok-bg); color: var(--s); }
+.chip.bad { border-color: var(--e); background: var(--bad-bg); color: var(--e); }
+.built {
+  min-height: 42px; padding: 10px 12px; border: 2px dashed var(--b);
+  border-radius: 8px; margin: 6px 0; font-size: .92rem; background: var(--bg);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Present Simple</h1>
+  <p>утверждения · отрицания · вопросы · to be</p>
+  <div class="tools">
+    <button type="button" onclick="toggleTheme()">🌓 Тема</button>
+    <button type="button" onclick="resetAll()">↺ Сброс</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-t="theory" onclick="go('theory')">Теория</button>
+  <button class="tab" data-t="aff" onclick="go('aff')">+</button>
+  <button class="tab" data-t="neg" onclick="go('neg')">−</button>
+  <button class="tab" data-t="q" onclick="go('q')">?</button>
+  <button class="tab" data-t="be" onclick="go('be')">to be</button>
+  <button class="tab" data-t="gaps" onclick="go('gaps')">Пропуски</button>
+  <button class="tab" data-t="error" onclick="go('error')">Ошибки</button>
+  <button class="tab" data-t="order" onclick="go('order')">Порядок</button>
+  <button class="tab" data-t="write" onclick="go('write')">Напиши</button>
+  <button class="tab" data-t="mixed" onclick="go('mixed')">Микс</button>
+  <button class="tab" data-t="result" onclick="go('result')">Итог</button>
+</div>
+
+<section class="sec active" id="theory">
+  <div class="card">
+    <h2>Present Simple — когда?</h2>
+    <div class="rule"><b>Привычки и регулярные действия</b><div class="ex">I go to work every day. · She drinks coffee in the morning.</div></div>
+    <div class="rule"><b>Факты и общее</b><div class="ex">Water boils at 100°C. · He lives in Minsk.</div></div>
+  </div>
+  <div class="card">
+    <h2>Формы (обычные глаголы)</h2>
+    <div class="grid2">
+      <div class="box"><b>+</b><br>I / you / we / they <b>work</b><br>he / she / it <b>works</b></div>
+      <div class="box"><b>−</b><br>I / you / we / they <b>don’t work</b><br>he / she / it <b>doesn’t work</b></div>
+      <div class="box"><b>?</b><br><b>Do</b> I / you / we / they work?<br><b>Does</b> he / she / it work?</div>
+      <div class="box"><b>-s / -es / -ies</b><br>work → works · go → goes<br>watch → watches · study → studies</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>to be (am / is / are)</h2>
+    <div class="grid2">
+      <div class="box"><b>+</b><br>I <b>am</b> · he/she/it <b>is</b><br>you/we/they <b>are</b></div>
+      <div class="box"><b>−</b><br>I’m not · isn’t · aren’t</div>
+      <div class="box"><b>?</b><br>Am I…? · Is he…? · Are you…?</div>
+      <div class="box"><b>Без do/does</b><br>не: *Does he is* · *Do you are*</div>
+    </div>
+    <button class="btn" onclick="go('aff')">К упражнениям →</button>
+  </div>
+</section>
+
+<section class="sec" id="aff">
+  <div class="card">
+    <h2>Утверждения (+)</h2>
+    <p class="hint">Выбери правильную форму глагола.</p>
+    <div class="progress-bar"><div class="progress-fill" id="affProg" style="width:0%"></div></div>
+    <div id="affBox"></div>
+    <div class="score" id="affScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkTopic('aff')">Проверить</button>
+      <button class="btn sec" onclick="renderTopic('aff')">Заново</button>
+      <button class="btn sec" onclick="go('neg')">Далее →</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="neg">
+  <div class="card">
+    <h2>Отрицания (−)</h2>
+    <p class="hint">don’t / doesn’t + V1 (без -s).</p>
+    <div class="progress-bar"><div class="progress-fill" id="negProg" style="width:0%"></div></div>
+    <div id="negBox"></div>
+    <div class="score" id="negScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkTopic('neg')">Проверить</button>
+      <button class="btn sec" onclick="renderTopic('neg')">Заново</button>
+      <button class="btn sec" onclick="go('q')">Далее →</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="q">
+  <div class="card">
+    <h2>Вопросы (?)</h2>
+    <p class="hint">Do / Does + subject + V1?</p>
+    <div class="progress-bar"><div class="progress-fill" id="qProg" style="width:0%"></div></div>
+    <div id="qBox"></div>
+    <div class="score" id="qScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkTopic('q')">Проверить</button>
+      <button class="btn sec" onclick="renderTopic('q')">Заново</button>
+      <button class="btn sec" onclick="go('be')">Далее →</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="be">
+  <div class="card">
+    <h2>to be · am / is / are</h2>
+    <p class="hint">Без do/does. Свои формы в +, − и ?.</p>
+    <div class="progress-bar"><div class="progress-fill" id="beProg" style="width:0%"></div></div>
+    <div id="beBox"></div>
+    <div class="score" id="beScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkTopic('be')">Проверить</button>
+      <button class="btn sec" onclick="renderTopic('be')">Заново</button>
+      <button class="btn sec" onclick="go('gaps')">Далее →</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="gaps">
+  <div class="card">
+    <h2>Пропуски</h2>
+    <p class="hint">Вставь нужную форму.</p>
+    <div class="progress-bar"><div class="progress-fill" id="gapsProg" style="width:0%"></div></div>
+    <div id="gapsBox"></div>
+    <div class="score" id="gapsScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkGaps()">Проверить</button>
+      <button class="btn sec" onclick="renderGaps()">Заново</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="error">
+  <div class="card">
+    <h2>Исправь ошибку</h2>
+    <p class="hint">Выбери правильный вариант.</p>
+    <div class="progress-bar"><div class="progress-fill" id="errorProg" style="width:0%"></div></div>
+    <div id="errorBox"></div>
+    <div class="score" id="errorScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkError()">Проверить</button>
+      <button class="btn sec" onclick="renderError()">Заново</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="order">
+  <div class="card">
+    <h2>Собери предложение</h2>
+    <p class="hint">Нажми слова в правильном порядке.</p>
+    <div class="progress-bar"><div class="progress-fill" id="orderProg" style="width:0%"></div></div>
+    <div id="orderBox"></div>
+    <div class="score" id="orderScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkOrder()">Проверить</button>
+      <button class="btn sec" onclick="renderOrder()">Заново</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="write">
+  <div class="card">
+    <h2>Напиши форму</h2>
+    <p class="hint">Впиши слово сам.</p>
+    <div class="progress-bar"><div class="progress-fill" id="writeProg" style="width:0%"></div></div>
+    <div id="writeBox"></div>
+    <div class="score" id="writeScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkWrite()">Проверить</button>
+      <button class="btn sec" onclick="renderWrite()">Заново</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="mixed">
+  <div class="card">
+    <h2>Микс</h2>
+    <p class="hint">Всё вместе: +, −, ?, to be.</p>
+    <div class="progress-bar"><div class="progress-fill" id="mixedProg" style="width:0%"></div></div>
+    <div id="mixedBox"></div>
+    <div class="score" id="mixedScore"></div>
+    <div class="sticky-actions">
+      <button class="btn" onclick="checkTopic('mixed')">Проверить</button>
+      <button class="btn sec" onclick="renderTopic('mixed')">Заново</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="result">
+  <div class="card">
+    <h2>Итог</h2>
+    <div id="resultBox"><p class="hint">Пройди разделы и нажми «Проверить».</p></div>
+    <button class="btn" onclick="showResult()">Обновить итог</button>
+    <button class="btn sec" onclick="resetAll()">Сбросить всё</button>
+  </div>
+</section>
+
+<script>
+const STORE = 'presentSimple_v1';
+
+function shuffle(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function toggleTheme() {
+  const d = document.documentElement;
+  d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? '' : 'dark');
+}
+function go(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.t === id));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'result') showResult();
+}
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { return null; }
+}
+function saveStore(data) {
+  try { localStorage.setItem(STORE, JSON.stringify(data)); } catch (e) {}
+}
+function persist(key, ok, total) {
+  const d = loadStore() || {};
+  d[key] = { ok, total, at: new Date().toISOString() };
+  saveStore(d);
+}
+
+const DATA = {
+  aff: [
+    { q: 'She ___ to school every day.', a: 'goes', opts: ['go', 'goes', 'going', 'gone'] },
+    { q: 'I ___ English twice a week.', a: 'study', opts: ['studies', 'study', 'studying', 'studied'] },
+    { q: 'He ___ TV in the evening.', a: 'watches', opts: ['watch', 'watches', 'watching', 'watched'] },
+    { q: 'They ___ in a big house.', a: 'live', opts: ['lives', 'live', 'living', 'lived'] },
+    { q: 'My brother ___ football on Sundays.', a: 'plays', opts: ['play', 'plays', 'playing', 'played'] },
+    { q: 'The shop ___ at 9 a.m.', a: 'opens', opts: ['open', 'opens', 'opening', 'opened'] },
+    { q: 'We ___ breakfast together.', a: 'have', opts: ['has', 'have', 'having', 'had'] },
+    { q: 'It ___ a lot in autumn.', a: 'rains', opts: ['rain', 'rains', 'raining', 'rained'] },
+    { q: 'Anna ___ hard for her exams.', a: 'studies', opts: ['study', 'studies', 'studying', 'studied'] },
+    { q: 'You ___ very fast.', a: 'type', opts: ['types', 'type', 'typing', 'typed'] }
+  ],
+  neg: [
+    { q: 'He ___ like coffee.', a: 'doesn’t', opts: ['don’t', 'doesn’t', 'isn’t', 'not'] },
+    { q: 'I ___ work on Sundays.', a: 'don’t', opts: ['doesn’t', 'don’t', 'am not', 'not'] },
+    { q: 'She doesn’t ___ meat.', a: 'eat', opts: ['eats', 'eat', 'eating', 'ate'] },
+    { q: 'They ___ live near here.', a: 'don’t', opts: ['doesn’t', 'don’t', 'aren’t', 'not'] },
+    { q: 'It ___ rain much in July.', a: 'doesn’t', opts: ['don’t', 'doesn’t', 'isn’t', 'not'] },
+    { q: 'We don’t ___ to bed late.', a: 'go', opts: ['goes', 'go', 'going', 'went'] },
+    { q: 'My dad ___ drive to work.', a: 'doesn’t', opts: ['don’t', 'doesn’t', 'isn’t', 'not'] },
+    { q: 'You ___ need a ticket.', a: 'don’t', opts: ['doesn’t', 'don’t', 'aren’t', 'not'] },
+    { q: 'She doesn’t ___ French.', a: 'speak', opts: ['speaks', 'speak', 'speaking', 'spoke'] },
+    { q: 'The train ___ stop here.', a: 'doesn’t', opts: ['don’t', 'doesn’t', 'isn’t', 'not'] }
+  ],
+  q: [
+    { q: '___ she work in a bank?', a: 'Does', opts: ['Do', 'Does', 'Is', 'Are'] },
+    { q: '___ you speak English?', a: 'Do', opts: ['Does', 'Do', 'Is', 'Are'] },
+    { q: 'Does he ___ coffee?', a: 'drink', opts: ['drinks', 'drink', 'drinking', 'drank'] },
+    { q: '___ they live in Minsk?', a: 'Do', opts: ['Does', 'Do', 'Is', 'Are'] },
+    { q: 'Where ___ she live?', a: 'does', opts: ['do', 'does', 'is', 'are'] },
+    { q: 'What time ___ you get up?', a: 'do', opts: ['does', 'do', 'is', 'are'] },
+    { q: '___ it snow in winter here?', a: 'Does', opts: ['Do', 'Does', 'Is', 'Are'] },
+    { q: 'How often ___ he play tennis?', a: 'does', opts: ['do', 'does', 'is', 'are'] },
+    { q: 'Do they ___ the news every day?', a: 'watch', opts: ['watches', 'watch', 'watching', 'watched'] },
+    { q: '___ your sister like pizza?', a: 'Does', opts: ['Do', 'Does', 'Is', 'Are'] }
+  ],
+  be: [
+    { q: 'I ___ a student.', a: 'am', opts: ['is', 'are', 'am', 'be'] },
+    { q: 'She ___ from Poland.', a: 'is', opts: ['am', 'are', 'is', 'be'] },
+    { q: 'They ___ at home now.', a: 'are', opts: ['is', 'am', 'are', 'be'] },
+    { q: 'He ___ not a doctor.', a: 'is', opts: ['am', 'are', 'is', 'be'] },
+    { q: '___ you tired?', a: 'Are', opts: ['Is', 'Am', 'Are', 'Do'] },
+    { q: '___ she your sister?', a: 'Is', opts: ['Are', 'Am', 'Is', 'Does'] },
+    { q: 'We ___ not late.', a: 'are', opts: ['is', 'am', 'are', 'be'] },
+    { q: 'It ___ cold today.', a: 'is', opts: ['are', 'am', 'is', 'be'] },
+    { q: 'I ___ not hungry.', a: 'am', opts: ['is', 'are', 'am', 'be'] },
+    { q: 'Where ___ they from?', a: 'are', opts: ['is', 'am', 'are', 'do'] },
+    { q: 'This ___ my bag.', a: 'is', opts: ['are', 'am', 'is', 'be'] },
+    { q: '___ I next?', a: 'Am', opts: ['Is', 'Are', 'Am', 'Do'] }
+  ],
+  mixed: [
+    { q: 'She ___ to the gym twice a week.', a: 'goes', opts: ['go', 'goes', 'going', 'gone'] },
+    { q: '___ he speak Spanish?', a: 'Does', opts: ['Do', 'Does', 'Is', 'Are'] },
+    { q: 'They ___ like spicy food.', a: 'don’t', opts: ['doesn’t', 'don’t', 'aren’t', 'not'] },
+    { q: 'I ___ a teacher.', a: 'am', opts: ['is', 'are', 'am', 'be'] },
+    { q: 'What ___ you do at the weekend?', a: 'do', opts: ['does', 'do', 'are', 'is'] },
+    { q: 'The film ___ interesting.', a: 'is', opts: ['are', 'am', 'is', 'be'] },
+    { q: 'He doesn’t ___ early.', a: 'wake up', opts: ['wakes up', 'wake up', 'waking up', 'woke up'] },
+    { q: '___ they students?', a: 'Are', opts: ['Is', 'Am', 'Are', 'Do'] },
+    { q: 'We ___ lunch at 1 o’clock.', a: 'have', opts: ['has', 'have', 'having', 'had'] },
+    { q: 'She ___ not at work today.', a: 'is', opts: ['am', 'are', 'is', 'be'] },
+    { q: '___ your parents live near you?', a: 'Do', opts: ['Does', 'Do', 'Is', 'Are'] },
+    { q: 'It ___ rain every day in summer.', a: 'doesn’t', opts: ['don’t', 'doesn’t', 'isn’t', 'not'] }
+  ]
+};
+
+const gapsQ = [
+  { before: 'She', after: 'to work by bus.', a: 'goes', opts: ['go', 'goes', 'going', 'gone'] },
+  { before: 'I', after: 'not like fish.', a: 'do', opts: ['do', 'does', 'am', 'is'] },
+  { before: '', after: 'he play the guitar?', a: 'Does', opts: ['Do', 'Does', 'Is', 'Are'] },
+  { before: 'They', after: 'from Italy.', a: 'are', opts: ['is', 'am', 'are', 'be'] },
+  { before: 'He doesn’t', after: 'coffee.', a: 'drink', opts: ['drinks', 'drink', 'drinking', 'drank'] },
+  { before: 'We', after: 'English every day.', a: 'speak', opts: ['speaks', 'speak', 'speaking', 'spoke'] },
+  { before: '', after: 'you a student?', a: 'Are', opts: ['Is', 'Am', 'Are', 'Do'] },
+  { before: 'My sister', after: 'in Warsaw.', a: 'lives', opts: ['live', 'lives', 'living', 'lived'] },
+  { before: 'It', after: 'hot in here.', a: 'is', opts: ['are', 'am', 'is', 'be'] },
+  { before: '', after: 'they work on Saturdays?', a: 'Do', opts: ['Does', 'Do', 'Is', 'Are'] },
+  { before: 'I', after: 'hungry.', a: 'am', opts: ['is', 'are', 'am', 'be'] },
+  { before: 'She', after: 'not watch TV in the morning.', a: 'does', opts: ['do', 'does', 'is', 'are'] },
+  { before: 'The shops', after: 'at 8 p.m.', a: 'close', opts: ['closes', 'close', 'closing', 'closed'] },
+  { before: 'Where', after: 'your friend live?', a: 'does', opts: ['do', 'does', 'is', 'are'] }
+];
+
+const errorQ = [
+  { bad: 'She go to school every day.', a: 'She goes to school every day.', opts: ['She going to school every day.', 'She goes to school every day.', 'She go to school every day.'] },
+  { bad: 'He don’t like pizza.', a: 'He doesn’t like pizza.', opts: ['He doesn’t like pizza.', 'He don’t like pizza.', 'He not likes pizza.'] },
+  { bad: 'Does she works here?', a: 'Does she work here?', opts: ['Does she works here?', 'Does she work here?', 'Do she work here?'] },
+  { bad: 'I is a student.', a: 'I am a student.', opts: ['I is a student.', 'I am a student.', 'I are a student.'] },
+  { bad: 'They doesn’t live here.', a: 'They don’t live here.', opts: ['They don’t live here.', 'They doesn’t live here.', 'They not live here.'] },
+  { bad: 'Do he speak English?', a: 'Does he speak English?', opts: ['Do he speak English?', 'Does he speak English?', 'Is he speak English?'] },
+  { bad: 'She is like coffee.', a: 'She likes coffee.', opts: ['She is like coffee.', 'She likes coffee.', 'She like coffee.'] },
+  { bad: 'We is happy.', a: 'We are happy.', opts: ['We is happy.', 'We are happy.', 'We am happy.'] },
+  { bad: 'He doesn’t works on Monday.', a: 'He doesn’t work on Monday.', opts: ['He doesn’t works on Monday.', 'He doesn’t work on Monday.', 'He don’t work on Monday.'] },
+  { bad: 'Are she your sister?', a: 'Is she your sister?', opts: ['Are she your sister?', 'Is she your sister?', 'Does she your sister?'] },
+  { bad: 'Where do she live?', a: 'Where does she live?', opts: ['Where do she live?', 'Where does she live?', 'Where is she live?'] },
+  { bad: 'You is late.', a: 'You are late.', opts: ['You is late.', 'You are late.', 'You am late.'] }
+];
+
+const orderQ = [
+  { words: ['She', 'works', 'in', 'a', 'bank'], a: 'She works in a bank' },
+  { words: ['Do', 'you', 'speak', 'English'], a: 'Do you speak English' },
+  { words: ['He', 'doesn’t', 'like', 'tea'], a: 'He doesn’t like tea' },
+  { words: ['I', 'am', 'a', 'teacher'], a: 'I am a teacher' },
+  { words: ['Where', 'does', 'she', 'live'], a: 'Where does she live' },
+  { words: ['They', 'are', 'not', 'at', 'home'], a: 'They are not at home' },
+  { words: ['Does', 'he', 'play', 'football'], a: 'Does he play football' },
+  { words: ['We', 'don’t', 'work', 'on', 'Sundays'], a: 'We don’t work on Sundays' }
+];
+
+const writeQ = [
+  { before: 'She', after: 'to the gym on Mondays.', answers: ['goes'] },
+  { before: 'I', after: 'not watch TV every day.', answers: ['do'] },
+  { before: '', after: 'he live near you?', answers: ['does'] },
+  { before: 'They', after: 'students.', answers: ['are'] },
+  { before: 'He doesn’t', after: 'meat.', answers: ['eat'] },
+  { before: 'I', after: 'from Belarus.', answers: ['am'] },
+  { before: 'What time', after: 'the shop open?', answers: ['does'] },
+  { before: 'We', after: 'not late.', answers: ['are'] },
+  { before: 'My dad', after: 'to work by car.', answers: ['goes', 'drives'] },
+  { before: '', after: 'you tired?', answers: ['are'] }
+];
+
+const state = { aff: [], neg: [], q: [], be: [], mixed: [], gaps: [], error: [], order: [], write: [] };
+
+function renderTopic(key) {
+  const boxId = key === 'mixed' ? 'mixedBox' : key + 'Box';
+  const scoreId = key === 'mixed' ? 'mixedScore' : key + 'Score';
+  const progId = key === 'mixed' ? 'mixedProg' : key + 'Prog';
+  const box = document.getElementById(boxId);
+  box.innerHTML = '';
+  state[key] = DATA[key].map(item => ({
+    ...item,
+    opts: shuffle(item.opts.slice()),
+    selected: null,
+    done: false
+  }));
+  state[key].forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="q-num">#${i + 1}</div>
+      <div class="q-text">${escapeHtml(item.q)}</div>
+      <div class="opts" id="${key}Opts${i}"></div>
+      <div class="fb" id="${key}Fb${i}"></div>`;
+    box.appendChild(div);
+    const optsEl = document.getElementById(key + 'Opts' + i);
+    item.opts.forEach(o => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opt';
+      b.textContent = o;
+      b.onclick = () => {
+        if (item.done) return;
+        item.selected = o;
+        optsEl.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      };
+      optsEl.appendChild(b);
+    });
+  });
+  document.getElementById(scoreId).textContent = '';
+  document.getElementById(progId).style.width = '0%';
+}
+
+function checkTopic(key) {
+  const items = state[key];
+  if (!items.length) return;
+  let ok = 0;
+  items.forEach((item, i) => {
+    item.done = true;
+    const optsEl = document.getElementById(key + 'Opts' + i);
+    const fb = document.getElementById(key + 'Fb' + i);
+    optsEl.querySelectorAll('.opt').forEach(btn => {
+      btn.disabled = true;
+      if (btn.textContent === item.a) btn.classList.add('ok');
+      else if (btn.textContent === item.selected && btn.textContent !== item.a) btn.classList.add('bad');
+    });
+    if (item.selected === item.a) {
+      ok++;
+      fb.className = 'fb ok';
+      fb.textContent = '✓';
+    } else {
+      fb.className = 'fb bad';
+      fb.textContent = '✗ ' + item.a;
+    }
+  });
+  const scoreId = key === 'mixed' ? 'mixedScore' : key + 'Score';
+  const progId = key === 'mixed' ? 'mixedProg' : key + 'Prog';
+  document.getElementById(scoreId).textContent = ok + ' / ' + items.length;
+  document.getElementById(progId).style.width = (100 * ok / items.length) + '%';
+  persist(key, ok, items.length);
+}
+
+function renderGaps() {
+  const box = document.getElementById('gapsBox');
+  box.innerHTML = '';
+  state.gaps = gapsQ.map(g => ({
+    ...g,
+    opts: shuffle(g.opts.slice()),
+    selected: '',
+    done: false
+  }));
+  state.gaps.forEach((g, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="q-num">#${i + 1}</div>
+      <div class="gap-wrap">
+        <span>${escapeHtml(g.before)}</span>
+        <select id="gap${i}"><option value="">—</option>
+          ${g.opts.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('')}
+        </select>
+        <span>${escapeHtml(g.after)}</span>
+      </div>
+      <div class="fb" id="gapFb${i}"></div>`;
+    box.appendChild(div);
+  });
+  document.getElementById('gapsScore').textContent = '';
+  document.getElementById('gapsProg').style.width = '0%';
+}
+function checkGaps() {
+  let ok = 0;
+  state.gaps.forEach((g, i) => {
+    const sel = document.getElementById('gap' + i);
+    const fb = document.getElementById('gapFb' + i);
+    g.selected = sel.value;
+    g.done = true;
+    sel.disabled = true;
+    if (g.selected === g.a) {
+      ok++;
+      sel.classList.add('ok');
+      fb.className = 'fb ok';
+      fb.textContent = '✓';
+    } else {
+      sel.classList.add('bad');
+      fb.className = 'fb bad';
+      fb.textContent = '✗ ' + g.a;
+    }
+  });
+  document.getElementById('gapsScore').textContent = ok + ' / ' + state.gaps.length;
+  document.getElementById('gapsProg').style.width = (100 * ok / state.gaps.length) + '%';
+  persist('gaps', ok, state.gaps.length);
+}
+
+function renderError() {
+  const box = document.getElementById('errorBox');
+  box.innerHTML = '';
+  state.error = errorQ.map(q => ({
+    ...q,
+    opts: shuffle(q.opts.slice()),
+    selected: null,
+    done: false
+  }));
+  state.error.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="q-num">#${i + 1}</div>
+      <div class="err-box"><span class="wrong">${escapeHtml(q.bad)}</span></div>
+      <div class="opts" id="erOpts${i}"></div>
+      <div class="fb" id="erFb${i}"></div>`;
+    box.appendChild(div);
+    const optsEl = document.getElementById('erOpts' + i);
+    q.opts.forEach(o => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opt';
+      b.textContent = o;
+      b.onclick = () => {
+        if (q.done) return;
+        q.selected = o;
+        optsEl.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      };
+      optsEl.appendChild(b);
+    });
+  });
+  document.getElementById('errorScore').textContent = '';
+  document.getElementById('errorProg').style.width = '0%';
+}
+function checkError() {
+  let ok = 0;
+  state.error.forEach((q, i) => {
+    q.done = true;
+    const optsEl = document.getElementById('erOpts' + i);
+    const fb = document.getElementById('erFb' + i);
+    optsEl.querySelectorAll('.opt').forEach(btn => {
+      btn.disabled = true;
+      if (btn.textContent === q.a) btn.classList.add('ok');
+      else if (btn.textContent === q.selected && btn.textContent !== q.a) btn.classList.add('bad');
+    });
+    if (q.selected === q.a) {
+      ok++;
+      fb.className = 'fb ok';
+      fb.textContent = '✓';
+    } else {
+      fb.className = 'fb bad';
+      fb.textContent = '✗ ' + q.a;
+    }
+  });
+  document.getElementById('errorScore').textContent = ok + ' / ' + state.error.length;
+  document.getElementById('errorProg').style.width = (100 * ok / state.error.length) + '%';
+  persist('error', ok, state.error.length);
+}
+
+function renderOrder() {
+  const box = document.getElementById('orderBox');
+  box.innerHTML = '';
+  state.order = orderQ.map(q => ({
+    ...q,
+    chips: shuffle(q.words.slice()),
+    built: [],
+    done: false
+  }));
+  state.order.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="q-num">#${i + 1}</div>
+      <div class="built" id="ordBuilt${i}"></div>
+      <div class="order-row" id="ordChips${i}"></div>
+      <button type="button" class="btn sec" style="font-size:.75rem;padding:6px 10px" onclick="clearOrder(${i})">Очистить</button>
+      <div class="fb" id="ordFb${i}"></div>`;
+    box.appendChild(div);
+    const row = document.getElementById('ordChips' + i);
+    q.chips.forEach((w, wi) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = w;
+      b.dataset.wi = wi;
+      b.onclick = () => {
+        if (q.done || b.classList.contains('used')) return;
+        q.built.push(w);
+        b.classList.add('used');
+        document.getElementById('ordBuilt' + i).textContent = q.built.join(' ');
+      };
+      row.appendChild(b);
+    });
+  });
+  document.getElementById('orderScore').textContent = '';
+  document.getElementById('orderProg').style.width = '0%';
+}
+function clearOrder(i) {
+  const q = state.order[i];
+  if (q.done) return;
+  q.built = [];
+  document.getElementById('ordBuilt' + i).textContent = '';
+  document.getElementById('ordChips' + i).querySelectorAll('.chip').forEach(c => c.classList.remove('used'));
+}
+function checkOrder() {
+  let ok = 0;
+  state.order.forEach((q, i) => {
+    q.done = true;
+    const fb = document.getElementById('ordFb' + i);
+    const built = document.getElementById('ordBuilt' + i);
+    const ans = q.built.join(' ');
+    const norm = s => s.replace(/[?.!]/g, '').trim().toLowerCase();
+    if (norm(ans) === norm(q.a)) {
+      ok++;
+      built.style.borderColor = 'var(--s)';
+      fb.className = 'fb ok';
+      fb.textContent = '✓';
+    } else {
+      built.style.borderColor = 'var(--e)';
+      fb.className = 'fb bad';
+      fb.textContent = '✗ ' + q.a;
+    }
+    document.getElementById('ordChips' + i).querySelectorAll('.chip').forEach(c => { c.style.pointerEvents = 'none'; });
+  });
+  document.getElementById('orderScore').textContent = ok + ' / ' + state.order.length;
+  document.getElementById('orderProg').style.width = (100 * ok / state.order.length) + '%';
+  persist('order', ok, state.order.length);
+}
+
+function renderWrite() {
+  const box = document.getElementById('writeBox');
+  box.innerHTML = '';
+  state.write = shuffle(writeQ.map(q => ({ ...q, selected: '', done: false })));
+  state.write.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="q-num">#${i + 1}</div>
+      <div class="gap-wrap">
+        <span>${escapeHtml(q.before)}</span>
+        <input type="text" id="wr${i}" autocomplete="off" autocapitalize="off" placeholder="…">
+        <span>${escapeHtml(q.after)}</span>
+      </div>
+      <div class="fb" id="wrFb${i}"></div>`;
+    box.appendChild(div);
+  });
+  document.getElementById('writeScore').textContent = '';
+  document.getElementById('writeProg').style.width = '0%';
+}
+function checkWrite() {
+  let ok = 0;
+  state.write.forEach((q, i) => {
+    const inp = document.getElementById('wr' + i);
+    const fb = document.getElementById('wrFb' + i);
+    const val = (inp.value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    q.selected = val;
+    q.done = true;
+    inp.disabled = true;
+    const accepted = q.answers.map(a => a.toLowerCase());
+    if (accepted.includes(val)) {
+      ok++;
+      inp.classList.add('ok');
+      fb.className = 'fb ok';
+      fb.textContent = '✓';
+    } else {
+      inp.classList.add('bad');
+      fb.className = 'fb bad';
+      fb.textContent = '✗ ' + q.answers.join(' / ');
+    }
+  });
+  document.getElementById('writeScore').textContent = ok + ' / ' + state.write.length;
+  document.getElementById('writeProg').style.width = (100 * ok / state.write.length) + '%';
+  persist('write', ok, state.write.length);
+}
+
+function showResult() {
+  const data = loadStore() || {};
+  const keys = [
+    { k: 'aff', t: 'Утверждения +' },
+    { k: 'neg', t: 'Отрицания −' },
+    { k: 'q', t: 'Вопросы ?' },
+    { k: 'be', t: 'to be' },
+    { k: 'gaps', t: 'Пропуски' },
+    { k: 'error', t: 'Ошибки' },
+    { k: 'order', t: 'Порядок' },
+    { k: 'write', t: 'Напиши' },
+    { k: 'mixed', t: 'Микс' }
+  ];
+  let sumOk = 0, sumTotal = 0, html = '';
+  keys.forEach(({ k, t }) => {
+    if (data[k]) {
+      sumOk += data[k].ok;
+      sumTotal += data[k].total;
+      const pct = Math.round(100 * data[k].ok / data[k].total);
+      html += `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--b);font-size:.9rem"><span>${t}</span><span><b>${data[k].ok}/${data[k].total}</b> (${pct}%)</span></div>`;
+    } else {
+      html += `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--b);font-size:.9rem;color:var(--m)"><span>${t}</span><span>не пройден</span></div>`;
+    }
+  });
+  if (sumTotal > 0) {
+    const pct = Math.round(100 * sumOk / sumTotal);
+    html = `<div style="text-align:center;margin-bottom:12px"><div style="font-size:2rem;font-weight:800;color:var(--p)">${sumOk} / ${sumTotal}</div><div style="color:var(--m)">${pct}%</div></div>` + html;
+  } else {
+    html = `<p class="hint">Пройди разделы и нажми «Проверить».</p>` + html;
+  }
+  document.getElementById('resultBox').innerHTML = html;
+}
+
+function resetAll() {
+  if (!confirm('Сбросить весь прогресс?')) return;
+  localStorage.removeItem(STORE);
+  ['aff', 'neg', 'q', 'be', 'mixed'].forEach(renderTopic);
+  renderGaps();
+  renderError();
+  renderOrder();
+  renderWrite();
+  showResult();
+  go('theory');
+}
+
+['aff', 'neg', 'q', 'be', 'mixed'].forEach(renderTopic);
+renderGaps();
+renderError();
+renderOrder();
+renderWrite();
+</script>
+</body>
+</html>
