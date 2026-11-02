@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1565c0">
+<title>Simple Tenses · Present · Past · Future</title>
+<style>
+:root {
+  --p:#1565c0; --p2:#1976d2; --s:#2e7d32; --e:#c62828; --w:#ef6c00;
+  --bg:#f0f4fa; --c:#fff; --t:#1a2332; --m:#5a6577; --b:#c5d0de;
+  --ok-bg:rgba(46,125,50,.12); --bad-bg:rgba(198,40,40,.12);
+}
+[data-theme=dark] {
+  --p:#64b5f6; --p2:#42a5f5; --s:#66bb6a; --e:#ef5350; --w:#ffb74d;
+  --bg:#0f1419; --c:#1a2332; --t:#e8eef4; --m:#9aa8b8; --b:#2a3544;
+  --ok-bg:rgba(102,187,106,.15); --bad-bg:rgba(239,83,80,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t);line-height:1.45;padding-bottom:70px;min-height:100vh}
+header{background:linear-gradient(135deg,#0d47a1,#1565c0 55%,#0288d1);color:#fff;padding:14px 12px 10px;text-align:center;position:sticky;top:0;z-index:40;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+header h1{font-size:1.15rem;font-weight:700}
+header p{opacity:.9;font-size:.74rem;margin-top:3px}
+.tools{margin-top:7px}
+.tools button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 11px;border-radius:16px;font-size:.71rem;font-weight:600;margin:0 2px}
+.tense-bar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 8px;justify-content:center;background:var(--c);border-bottom:1px solid var(--b);position:sticky;top:0;z-index:35}
+.tense-btn{padding:8px 14px;border:2px solid var(--b);border-radius:20px;background:var(--c);font-size:.78rem;font-weight:700;color:var(--p)}
+.tense-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.tabs{display:flex;flex-wrap:wrap;gap:5px;padding:8px 6px;justify-content:center;background:var(--bg);border-bottom:1px solid var(--b);position:sticky;top:0;z-index:30}
+.tab{padding:6px 10px;border:2px solid var(--b);border-radius:18px;background:var(--c);font-size:.7rem;font-weight:600;color:var(--p)}
+.tab.active{background:var(--p);color:#fff;border-color:var(--p)}
+.home{max-width:720px;margin:0 auto;padding:16px 12px 28px}
+.home-grid{display:grid;gap:12px;margin-top:14px}
+@media(min-width:560px){.home-grid{grid-template-columns:1fr 1fr 1fr}}
+.home-card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:16px;text-align:center}
+.home-card h3{color:var(--p);margin-bottom:6px;font-size:1.05rem}
+.home-card p{font-size:.82rem;color:var(--m);margin-bottom:12px}
+.sec{display:none;max-width:720px;margin:0 auto;padding:10px 12px 24px}
+.sec.active{display:block}
+.card{background:var(--c);border-radius:12px;padding:14px;margin-bottom:11px;border:1px solid var(--b)}
+.card h2{font-size:.98rem;color:var(--p);margin-bottom:6px}
+.hint{font-size:.77rem;color:var(--m);margin-bottom:10px}
+.rule{padding:10px;border-radius:8px;margin-bottom:8px;border-left:5px solid var(--p);background:var(--bg);font-size:.86rem}
+.rule b{display:block;margin-bottom:3px;color:var(--p)}
+.ex{font-style:italic;color:var(--m);font-size:.8rem;margin-top:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.box{background:var(--bg);border-radius:8px;padding:10px;font-size:.82rem}
+.box b{color:var(--p)}
+.q-item{padding:12px 0;border-bottom:1px solid var(--b)}
+.q-item:last-child{border-bottom:none}
+.q-num{font-size:.7rem;font-weight:700;color:var(--p);margin-bottom:4px}
+.q-text{font-weight:600;font-size:.93rem;margin-bottom:8px;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{padding:10px 12px;border:2px solid var(--b);border-radius:8px;background:var(--c);text-align:left;font-size:.87rem;font-weight:500}
+.opt:hover{border-color:var(--p)}
+.opt.selected{border-color:var(--p);background:rgba(21,101,192,.08)}
+[data-theme=dark] .opt.selected{background:rgba(100,181,246,.12)}
+.opt.ok{border-color:var(--s);background:var(--ok-bg);color:var(--s)}
+.opt.bad{border-color:var(--e);background:var(--bad-bg);color:var(--e)}
+.opt:disabled{pointer-events:none}
+.fb{font-size:.79rem;margin-top:6px;min-height:1.15em}
+.fb.ok{color:var(--s)}.fb.bad{color:var(--e)}
+.btn{padding:10px 15px;border:none;border-radius:8px;background:var(--p);color:#fff;font-weight:600;font-size:.86rem;margin:3px 2px}
+.btn.sec{background:var(--c);color:var(--p);border:2px solid var(--b)}
+.score{text-align:center;font-weight:700;font-size:1.08rem;margin:11px 0 4px}
+.progress-bar{height:8px;background:var(--b);border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));border-radius:4px;transition:width .3s}
+.sticky-actions{position:sticky;bottom:0;background:var(--c);border-top:1px solid var(--b);padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;z-index:15}
+.gap-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0;font-size:.93rem;line-height:1.75}
+.gap-wrap select,.gap-wrap input{padding:6px 8px;border:2px solid var(--b);border-radius:6px;background:var(--c);font-size:.86rem;min-width:90px}
+.gap-wrap select.ok,.gap-wrap input.ok{border-color:var(--s)}
+.gap-wrap select.bad,.gap-wrap input.bad{border-color:var(--e)}
+.err-box{background:var(--bg);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:.9rem}
+.err-box .wrong{color:var(--e);text-decoration:line-through;margin-right:6px}
+.order-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{padding:8px 12px;border:2px solid var(--b);border-radius:20px;background:var(--c);font-size:.85rem;font-weight:600}
+.chip.on{border-color:var(--p);background:rgba(21,101,192,.1);color:var(--p)}
+.chip.used{opacity:.35;pointer-events:none}
+.chip.ok{border-color:var(--s);background:var(--ok-bg);color:var(--s)}
+.chip.bad{border-color:var(--e);background:var(--bad-bg);color:var(--e)}
+.built{min-height:42px;padding:10px 12px;border:2px dashed var(--b);border-radius:8px;margin:6px 0;font-size:.92rem;background:var(--bg)}
+.hidden{display:none!important}
+#workArea.hidden,#homeView.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="hdrTitle">Simple Tenses</h1>
+  <p id="hdrSub">Present · Past · Future — теория и практика</p>
+  <div class="tools">
+    <button type="button" onclick="toggleTheme()">🌓 Тема</button>
+    <button type="button" onclick="goHome()">⌂ Выбор времени</button>
+    <button type="button" onclick="resetCurrent()">↺ Сброс</button>
+  </div>
+</header>
+
+<div id="homeView" class="home">
+  <div class="card">
+    <h2>Выбери время</h2>
+    <p class="hint">Каждое время — отдельно: теория, утверждения, отрицания, вопросы, to be, пропуски, ошибки, порядок слов, письмо и микс.</p>
+  </div>
+  <div class="home-grid">
+    <div class="home-card">
+      <h3>Present Simple</h3>
+      <p>привычки · факты · расписание · do/does · am/is/are</p>
+      <button class="btn" onclick="pickTense('present')">Открыть →</button>
+    </div>
+    <div class="home-card">
+      <h3>Past Simple</h3>
+      <p>прошедшие действия · V2/-ed · did · was/were</p>
+      <button class="btn" onclick="pickTense('past')">Открыть →</button>
+    </div>
+    <div class="home-card">
+      <h3>Future Simple</h3>
+      <p>будущее · will · won’t · will I…?</p>
+      <button class="btn" onclick="pickTense('future')">Открыть →</button>
+    </div>
+  </div>
+</div>
+
+<div id="workArea" class="hidden">
+  <div class="tense-bar">
+    <button class="tense-btn" data-tense="present" onclick="pickTense('present')">Present</button>
+    <button class="tense-btn" data-tense="past" onclick="pickTense('past')">Past</button>
+    <button class="tense-btn" data-tense="future" onclick="pickTense('future')">Future</button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div id="sections"></div>
+</div>
+
+<script>
+const STORE = 'simpleTenses_v2';
+const TENSES = {
+  present: { title: 'Present Simple', sub: 'утверждения · отрицания · вопросы · to be' },
+  past: { title: 'Past Simple', sub: 'V2 / -ed · did · was / were' },
+  future: { title: 'Future Simple', sub: 'will · won’t · вопросы с will' }
+};
+
+const THEORY = {
+  present: `
+  <div class="card"><h2>Present Simple — когда?</h2>
+  <p class="hint">Действия в «настоящем» в широком смысле: не привязаны к моменту речи.</p>
+  <div class="rule"><b>1. Привычки и регулярные действия</b><div class="ex">I often go to the bar. · She drinks coffee every morning.</div></div>
+  <div class="rule"><b>2. Постоянные факты / общая информация</b><div class="ex">I live in Dublin. · She speaks Chinese.</div></div>
+  <div class="rule"><b>3. Общеизвестные истины</b><div class="ex">Water boils at 100°C. · The Earth rotates around its axis.</div></div>
+  <div class="rule"><b>4. Расписание / будущие действия по графику</b><div class="ex">The train leaves at 9 pm. · The meeting starts at 6.</div></div>
+  <div class="rule"><b>5. Инструкции и последовательность шагов</b><div class="ex">You push the red button. · First you turn left, then you go straight.</div></div>
+  <div class="rule"><b>6. (реже) Заголовки / «живой» рассказ</b><div class="ex">Bus crashes in India. · He comes in and says “Hello!”</div></div>
+  </div>
+  <div class="card"><h2>Формулы: обычные глаголы</h2>
+  <div class="grid2">
+    <div class="box"><b>+</b><br>I/we/you/they + <b>V</b><br>he/she/it + <b>V+s/es</b></div>
+    <div class="box"><b>−</b><br>don’t / doesn’t + <b>V</b></div>
+    <div class="box"><b>?</b><br>Do / Does + subject + <b>V</b>?</div>
+    <div class="box"><b>QW?</b><br>Where/Why + do/does + subject + V?</div>
+  </div>
+  <div class="rule"><b>Правило «магнита»</b> do/does «забирает» -s у глагола: She likes → She doesn’t like · Does she like?</div>
+  <div class="rule"><b>-s / -es / -ies</b><div class="ex">work→works · go→goes · watch→watches · study→studies · play→plays</div></div>
+  </div>
+  <div class="card"><h2>to be (am / is / are)</h2>
+  <div class="grid2">
+    <div class="box"><b>+</b> I am · he/she/it is · you/we/they are</div>
+    <div class="box"><b>−</b> I’m not · isn’t · aren’t</div>
+    <div class="box"><b>?</b> Am I…? Is he…? Are you…?</div>
+    <div class="box"><b>Без do/does</b><br>✗ *Does he is*</div>
+  </div>
+  <div class="rule"><b>Когда to be:</b> профессия, качества, возраст, место, погода/ощущения</div>
+  </div>
+  <div class="card"><h2>Маркеры</h2>
+  <div class="rule">always · usually · often · sometimes · never · every day · on Mondays · twice a week
+  <div class="ex">I always drink coffee. · He is always late. (after be)</div></div>
+  <button class="btn" onclick="go('aff')">К упражнениям →</button>
+  </div>`,
+
+  past: `
+  <div class="card"><h2>Past Simple — когда?</h2>
+  <div class="rule"><b>1. Однократное действие в прошлом</b><div class="ex">I visited London last year. · She called me yesterday.</div></div>
+  <div class="rule"><b>2. Регулярные действия в прошлом</b><div class="ex">We played tennis every Sunday when we were kids.</div></div>
+  <div class="rule"><b>3. Постоянный признак / характеристика в прошлом</b><div class="ex">He lived in Minsk. · She worked as a teacher.</div></div>
+  <div class="rule"><b>4. Цепочка последовательных действий</b><div class="ex">I got up, had breakfast and left the house.</div></div>
+  </div>
+  <div class="card"><h2>Формулы: обычные глаголы</h2>
+  <div class="grid2">
+    <div class="box"><b>+</b><br>Subject + <b>V2 / V-ed</b><br><span class="ex">I worked · She went · They played</span></div>
+    <div class="box"><b>−</b><br>Subject + <b>didn’t</b> + V<br><span class="ex">I didn’t work · She didn’t go</span></div>
+    <div class="box"><b>?</b><br><b>Did</b> + subject + V?<br><span class="ex">Did you work? · Did she go?</span></div>
+    <div class="box"><b>QW?</b><br>Where/When + did + subject + V?<br><span class="ex">Where did he live?</span></div>
+  </div>
+  <div class="rule"><b>Правило «магнита»</b> did «забирает» окончание: She went → She didn’t go · Did she go?</div>
+  <div class="rule"><b>Правильные глаголы:</b> work→worked · play→played · study→studied · stop→stopped
+  <div class="ex">-y → -ied (study→studied) · удвоение согласной (stop→stopped)</div></div>
+  <div class="rule"><b>Неправильные:</b> go→went · see→saw · have→had · make→made · take→took · come→came · buy→bought</div>
+  </div>
+  <div class="card"><h2>to be: was / were</h2>
+  <div class="grid2">
+    <div class="box"><b>+</b><br>I/he/she/it <b>was</b><br>you/we/they <b>were</b></div>
+    <div class="box"><b>−</b><br>wasn’t · weren’t</div>
+    <div class="box"><b>?</b><br>Was I/he…? · Were you/we…?</div>
+    <div class="box"><b>Без did</b><br>✗ *Did he was*</div>
+  </div>
+  <div class="rule"><b>Когда was/were:</b> был/была/было/были — профессия, место, состояние в прошлом</div>
+  </div>
+  <div class="card"><h2>have → had</h2>
+  <div class="rule">have/has → <b>had</b> для всех лиц. · I had a car. · She had two dogs. · Did you have time?</div>
+  <div class="rule"><b>Маркеры:</b> yesterday · last week/year · ago · in 2019 · when I was a child · the day before yesterday</div>
+  <button class="btn" onclick="go('aff')">К упражнениям →</button>
+  </div>`,
+
+  future: `
+  <div class="card"><h2>Future Simple — когда?</h2>
+  <div class="rule"><b>1. Простое действие в будущем</b><div class="ex">I will call you tomorrow. · She will arrive at 6.</div></div>
+  <div class="rule"><b>2. Регулярные / повторяющиеся действия в будущем</b><div class="ex">We will meet every Friday next month.</div></div>
+  <div class="rule"><b>3. Последовательность действий в будущем</b><div class="ex">I will finish work, then I will go home.</div></div>
+  <div class="rule"><b>4. Спонтанные решения, обещания, прогнозы</b><div class="ex">OK, I’ll help you. · I think it will rain.</div></div>
+  </div>
+  <div class="card"><h2>Формулы</h2>
+  <div class="grid2">
+    <div class="box"><b>+</b><br>Subject + <b>will</b> + V<br><span class="ex">I will go · She’ll call · They will help</span></div>
+    <div class="box"><b>−</b><br>Subject + <b>won’t</b> (will not) + V<br><span class="ex">I won’t go · She won’t call</span></div>
+    <div class="box"><b>?</b><br><b>Will</b> + subject + V?<br><span class="ex">Will you go? · Will she call?</span></div>
+    <div class="box"><b>QW?</b><br>When/Where + will + subject + V?<br><span class="ex">When will he arrive?</span></div>
+  </div>
+  <div class="rule"><b>will</b> одинаков для всех лиц. Глагол всегда в начальной форме (без -s, без -ed).</div>
+  <div class="rule"><b>shall</b> сейчас редко (I/we); чаще will для всех. Shall I help you? — предложение помощи.</div>
+  </div>
+  <div class="card"><h2>to be в будущем</h2>
+  <div class="rule">will be · won’t be · Will … be?
+  <div class="ex">She will be at home. · Will you be free tomorrow? · It won’t be easy.</div></div>
+  <div class="rule"><b>Маркеры:</b> tomorrow · next week/month/year · in 2030 · soon · later · in a few days · the day after tomorrow</div>
+  <button class="btn" onclick="go('aff')">К упражнениям →</button>
+  </div>`
+};
+
+const DATA = {
+  present: {
+    aff: [
+      {q:'She ___ to school every day.', a:'goes', opts:['go','goes','going','gone']},
+      {q:'I ___ English twice a week.', a:'study', opts:['studies','study','studying','studied']},
+      {q:'He ___ TV in the evening.', a:'watches', opts:['watch','watches','watching','watched']},
+      {q:'They ___ in a big house.', a:'live', opts:['lives','live','living','lived']},
+      {q:'My brother ___ football on Sundays.', a:'plays', opts:['play','plays','playing','played']},
+      {q:'The shop ___ at 9 a.m.', a:'opens', opts:['open','opens','opening','opened']},
+      {q:'We ___ breakfast together.', a:'have', opts:['has','have','having','had']},
+      {q:'It ___ a lot in autumn.', a:'rains', opts:['rain','rains','raining','rained']}
+    ],
+    neg: [
+      {q:'He ___ like coffee.', a:"doesn't", opts:["don't","doesn't","isn't","not"]},
+      {q:'I ___ work on Sundays.', a:"don't", opts:["doesn't","don't","am not","not"]},
+      {q:"She doesn't ___ meat.", a:'eat', opts:['eats','eat','eating','ate']},
+      {q:"They ___ live here.", a:"don't", opts:["doesn't","don't","aren't","not"]},
+      {q:"It doesn't ___ much in summer.", a:'rain', opts:['rains','rain','raining','rained']},
+      {q:"We ___ watch that show.", a:"don't", opts:["doesn't","don't","aren't","not"]}
+    ],
+    q: [
+      {q:'___ you speak English?', a:'Do', opts:['Do','Does','Are','Is']},
+      {q:'___ she work here?', a:'Does', opts:['Do','Does','Is','Has']},
+      {q:'Where ___ he live?', a:'does', opts:['do','does','is','has']},
+      {q:'___ they play tennis?', a:'Do', opts:['Do','Does','Are','Is']},
+      {q:'What time ___ the train leave?', a:'does', opts:['do','does','is','has']},
+      {q:'___ it rain often here?', a:'Does', opts:['Do','Does','Is','Has']}
+    ],
+    be: [
+      {q:'I ___ a student.', a:'am', opts:['am','is','are','be']},
+      {q:'She ___ a teacher.', a:'is', opts:['am','is','are','be']},
+      {q:'They ___ at home.', a:'are', opts:['am','is','are','be']},
+      {q:'___ you ready?', a:'Are', opts:['Am','Is','Are','Do']},
+      {q:'He ___ not at school.', a:"isn't", opts:["isn't","aren't","am not","doesn't"]},
+      {q:'We ___ hungry.', a:'are', opts:['am','is','are','be']}
+    ],
+    gaps: [
+      {text:['She ',' coffee every morning.'], a:['drinks'], opts:[['drink','drinks','drank']]},
+      {text:['I ',' to work by bus.'], a:['go'], opts:[['go','goes','went']]},
+      {text:['',' he live in Minsk?'], a:['Does'], opts:[['Do','Does','Is']]},
+      {text:['They ',' like spicy food.'], a:["don't"], opts:[["don't","doesn't","aren't"]]}
+    ],
+    error: [
+      {wrong:'She go to school every day.', right:'She goes to school every day.'},
+      {wrong:'Does he lives here?', right:'Does he live here?'},
+      {wrong:'I doesn’t like tea.', right:"I don’t like tea."},
+      {wrong:'He are a doctor.', right:'He is a doctor.'}
+    ],
+    order: [
+      {words:['She','works','in','an','office'], answer:'She works in an office'},
+      {words:['Do','you','speak','French'], answer:'Do you speak French'},
+      {words:['He','doesn’t','play','football'], answer:"He doesn’t play football"}
+    ],
+    write: [
+      {prompt:'Она живёт в Лондоне.', a:['she lives in london']},
+      {prompt:'Ты говоришь по-английски?', a:['do you speak english']},
+      {prompt:'Мы не работаем по воскресеньям.', a:["we don't work on sundays","we do not work on sundays"]}
+    ],
+    mixed: [
+      {q:'The film ___ at 8 p.m.', a:'starts', opts:['start','starts','started','starting']},
+      {q:'___ your parents live near here?', a:'Do', opts:['Do','Does','Are','Is']},
+      {q:'He ___ never late.', a:'is', opts:['is','are','does','do']},
+      {q:'I ___ understand this rule.', a:"don't", opts:["don't","doesn't","am not","isn't"]}
+    ]
+  },
+  past: {
+    aff: [
+      {q:'She ___ to Paris last year.', a:'went', opts:['go','goes','went','gone']},
+      {q:'I ___ a great film yesterday.', a:'watched', opts:['watch','watched','watching','watches']},
+      {q:'They ___ football on Sunday.', a:'played', opts:['play','played','playing','plays']},
+      {q:'He ___ home at 7.', a:'came', opts:['come','came','comes','coming']},
+      {q:'We ___ lunch together.', a:'had', opts:['have','had','has','having']},
+      {q:'I ___ my keys.', a:'lost', opts:['lose','lost','loses','losing']},
+      {q:'She ___ hard for the exam.', a:'studied', opts:['study','studied','studies','studying']},
+      {q:'The shop ___ at 6 yesterday.', a:'closed', opts:['close','closed','closes','closing']}
+    ],
+    neg: [
+      {q:'He ___ go to the party.', a:"didn't", opts:["didn't","doesn't","wasn't","don't"]},
+      {q:'I ___ see that film.', a:"didn't", opts:["didn't","don't","wasn't","haven't"]},
+      {q:"She didn't ___ the email.", a:'send', opts:['sent','send','sends','sending']},
+      {q:'They ___ live here in 2010.', a:"didn't", opts:["didn't","don't","weren't","hasn't"]},
+      {q:'We ___ finish the project.', a:"didn't", opts:["didn't","don't","weren't","hasn't"]},
+      {q:"He didn't ___ the question.", a:'answer', opts:['answered','answer','answers','answering']}
+    ],
+    q: [
+      {q:'___ you go to school yesterday?', a:'Did', opts:['Did','Do','Does','Was']},
+      {q:'___ she call you?', a:'Did', opts:['Did','Does','Was','Has']},
+      {q:'Where ___ he live in 2015?', a:'did', opts:['did','do','does','was']},
+      {q:'___ they play tennis last week?', a:'Did', opts:['Did','Do','Were','Have']},
+      {q:'What time ___ the train leave?', a:'did', opts:['did','do','does','was']},
+      {q:'___ it rain yesterday?', a:'Did', opts:['Did','Does','Was','Has']}
+    ],
+    be: [
+      {q:'I ___ tired yesterday.', a:'was', opts:['was','were','am','is']},
+      {q:'They ___ at home last night.', a:'were', opts:['was','were','are','been']},
+      {q:'She ___ not at school.', a:"wasn't", opts:["wasn't","weren't","isn't","didn't"]},
+      {q:'___ you free yesterday?', a:'Were', opts:['Was','Were','Are','Did']},
+      {q:'He ___ a student in 2018.', a:'was', opts:['was','were','is','been']},
+      {q:'We ___ happy to see you.', a:'were', opts:['was','were','are','been']}
+    ],
+    gaps: [
+      {text:['She ',' to London last month.'], a:['went'], opts:[['go','went','goes']]},
+      {text:['I ',' finish my homework.'], a:["didn't"], opts:[["didn't","don't","doesn't"]]},
+      {text:['',' you see that film?'], a:['Did'], opts:[['Did','Do','Does']]},
+      {text:['They ',' at the park yesterday.'], a:['were'], opts:[['was','were','are']]}
+    ],
+    error: [
+      {wrong:'She go to school yesterday.', right:'She went to school yesterday.'},
+      {wrong:'Did he went home?', right:'Did he go home?'},
+      {wrong:'I didn’t saw him.', right:"I didn’t see him."},
+      {wrong:'They was happy.', right:'They were happy.'}
+    ],
+    order: [
+      {words:['She','visited','her','parents','yesterday'], answer:'She visited her parents yesterday'},
+      {words:['Did','you','call','him'], answer:'Did you call him'},
+      {words:['He','didn’t','buy','the','ticket'], answer:"He didn’t buy the ticket"}
+    ],
+    write: [
+      {prompt:'Я видел этот фильм вчера.', a:['i saw this film yesterday','i saw that film yesterday']},
+      {prompt:'Она не ходила в школу.', a:["she didn't go to school","she did not go to school"]},
+      {prompt:'Ты был дома?', a:['were you at home','was you at home']}
+    ],
+    mixed: [
+      {q:'We ___ dinner at 8 last night.', a:'had', opts:['have','had','has','having']},
+      {q:'___ she work yesterday?', a:'Did', opts:['Did','Does','Was','Has']},
+      {q:'I ___ not ready.', a:'was', opts:['was','were','am','did']},
+      {q:'They ___ the news.', a:"didn't hear", opts:["didn't hear","don't hear","didn't heard","not heard"]}
+    ]
+  },
+  future: {
+    aff: [
+      {q:'I ___ call you tomorrow.', a:'will', opts:['will','would','do','am']},
+      {q:'She ___ arrive at 6.', a:'will', opts:['will','is','does','would']},
+      {q:'They ___ help us.', a:'will', opts:['will','do','are','would']},
+      {q:'We ___ meet next week.', a:'will', opts:['will','do','are','would']},
+      {q:'It ___ rain later.', a:'will', opts:['will','is','does','would']},
+      {q:'He ___ be 30 next year.', a:'will', opts:['will','is','does','would']},
+      {q:'I ___ send the email soon.', a:'will', opts:['will','do','am','would']},
+      {q:'You ___ like this film.', a:'will', opts:['will','do','are','would']}
+    ],
+    neg: [
+      {q:'I ___ go there.', a:"won't", opts:["won't","don't","didn't","wouldn't"]},
+      {q:'She ___ call you.', a:"won't", opts:["won't","doesn't","didn't","isn't"]},
+      {q:"They won't ___ the project.", a:'finish', opts:['finish','finishes','finished','finishing']},
+      {q:'We ___ be late.', a:"won't", opts:["won't","aren't","don't","weren't"]},
+      {q:'He ___ buy a new car.', a:"won't", opts:["won't","doesn't","didn't","isn't"]},
+      {q:"It won't ___ easy.", a:'be', opts:['be','is','was','being']}
+    ],
+    q: [
+      {q:'___ you help me?', a:'Will', opts:['Will','Do','Did','Are']},
+      {q:'___ she come tomorrow?', a:'Will', opts:['Will','Does','Is','Did']},
+      {q:'When ___ he arrive?', a:'will', opts:['will','does','is','did']},
+      {q:'___ they be at home?', a:'Will', opts:['Will','Are','Do','Did']},
+      {q:'Where ___ we meet?', a:'will', opts:['will','do','are','did']},
+      {q:'___ it rain tomorrow?', a:'Will', opts:['Will','Does','Is','Did']}
+    ],
+    be: [
+      {q:'She ___ be at home.', a:'will', opts:['will','is','was','would']},
+      {q:'I ___ be ready soon.', a:'will', opts:['will','am','was','would']},
+      {q:'They ___ be late.', a:"won't", opts:["won't","aren't","weren't","don't"]},
+      {q:'___ you be free tomorrow?', a:'Will', opts:['Will','Are','Do','Did']},
+      {q:'It ___ be cold.', a:'will', opts:['will','is','was','would']},
+      {q:'We ___ be there at 5.', a:'will', opts:['will','are','were','would']}
+    ],
+    gaps: [
+      {text:['I ',' call you later.'], a:['will'], opts:[['will','do','would']]},
+      {text:['She ',' come to the party.'], a:["won't"], opts:[["won't","doesn't","didn't"]]},
+      {text:['',' you help me?'], a:['Will'], opts:[['Will','Do','Did']]},
+      {text:['They will ',' in London next year.'], a:['be'], opts:[['be','are','were']]}
+    ],
+    error: [
+      {wrong:'She will goes to Paris.', right:'She will go to Paris.'},
+      {wrong:'Will he will come?', right:'Will he come?'},
+      {wrong:'I won’t to call you.', right:"I won’t call you."},
+      {wrong:'Does she will work tomorrow?', right:'Will she work tomorrow?'}
+    ],
+    order: [
+      {words:['She','will','call','you','tomorrow'], answer:'She will call you tomorrow'},
+      {words:['Will','you','help','me'], answer:'Will you help me'},
+      {words:['He','won’t','be','late'], answer:"He won’t be late"}
+    ],
+    write: [
+      {prompt:'Я позвоню тебе завтра.', a:['i will call you tomorrow',"i'll call you tomorrow"]},
+      {prompt:'Она не приедет.', a:["she won't come","she will not come","she won't arrive","she will not arrive"]},
+      {prompt:'Ты будешь свободен?', a:['will you be free','will you be free tomorrow']}
+    ],
+    mixed: [
+      {q:'We ___ start next Monday.', a:'will', opts:['will','do','are','did']},
+      {q:'___ it be sunny?', a:'Will', opts:['Will','Is','Does','Did']},
+      {q:'I ___ forget your birthday.', a:"won't", opts:["won't","don't","didn't","am not"]},
+      {q:'They will ___ the tickets online.', a:'buy', opts:['buy','buys','bought','buying']}
+    ]
+  }
+};
+
+let currentTense = null;
+let state = {};
+
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toggleTheme(){const d=document.documentElement;d.setAttribute('data-theme',d.getAttribute('data-theme')==='dark'?'':'dark');}
+function loadStore(){try{return JSON.parse(localStorage.getItem(STORE)||'{}');}catch(e){return{};}}
+function saveStore(d){try{localStorage.setItem(STORE,JSON.stringify(d));}catch(e){}}
+function persist(key,ok,total){const d=loadStore();if(!d[currentTense])d[currentTense]={};d[currentTense][key]={ok,total,at:new Date().toISOString()};saveStore(d);}
+
+function goHome(){
+  currentTense=null;
+  document.getElementById('homeView').classList.remove('hidden');
+  document.getElementById('workArea').classList.add('hidden');
+  document.getElementById('hdrTitle').textContent='Simple Tenses';
+  document.getElementById('hdrSub').textContent='Present · Past · Future — теория и практика';
+}
+
+function pickTense(t){
+  currentTense=t;
+  document.getElementById('homeView').classList.add('hidden');
+  document.getElementById('workArea').classList.remove('hidden');
+  document.getElementById('hdrTitle').textContent=TENSES[t].title;
+  document.getElementById('hdrSub').textContent=TENSES[t].sub;
+  document.querySelectorAll('.tense-btn').forEach(b=>b.classList.toggle('active',b.dataset.tense===t));
+  buildUI();
+  go('theory');
+}
+
+function buildUI(){
+  const tabs=[
+    ['theory','Теория'],['aff','+'],['neg','−'],['q','?'],['be','to be'],
+    ['gaps','Пропуски'],['error','Ошибки'],['order','Порядок'],['write','Напиши'],['mixed','Микс'],['result','Итог']
+  ];
+  document.getElementById('tabs').innerHTML=tabs.map(([id,lab])=>
+    `<button class="tab" data-t="${id}" onclick="go('${id}')">${lab}</button>`).join('');
+  const sec=document.getElementById('sections');
+  sec.innerHTML=`
+    <section class="sec" id="theory">${THEORY[currentTense]}</section>
+    ${['aff','neg','q','be','mixed'].map(k=>`
+      <section class="sec" id="${k}">
+        <div class="card">
+          <h2>${label(k)}</h2>
+          <div class="progress-bar"><div class="progress-fill" id="${k}Prog" style="width:0"></div></div>
+          <div id="${k}Box"></div>
+          <div class="score" id="${k}Score"></div>
+        </div>
+        <div class="sticky-actions">
+          <button class="btn" onclick="checkTopic('${k}')">Проверить</button>
+          <button class="btn sec" onclick="renderTopic('${k}')">Заново</button>
+        </div>
+      </section>`).join('')}
+    <section class="sec" id="gaps">
+      <div class="card"><h2>Пропуски</h2><div class="progress-bar"><div class="progress-fill" id="gapsProg" style="width:0"></div></div><div id="gapsBox"></div><div class="score" id="gapsScore"></div></div>
+      <div class="sticky-actions"><button class="btn" onclick="checkGaps()">Проверить</button><button class="btn sec" onclick="renderGaps()">Заново</button></div>
+    </section>
+    <section class="sec" id="error">
+      <div class="card"><h2>Исправь ошибки</h2><div id="errorBox"></div><div class="score" id="errorScore"></div></div>
+      <div class="sticky-actions"><button class="btn" onclick="checkError()">Проверить</button><button class="btn sec" onclick="renderError()">Заново</button></div>
+    </section>
+    <section class="sec" id="order">
+      <div class="card"><h2>Порядок слов</h2><div id="orderBox"></div><div class="score" id="orderScore"></div></div>
+      <div class="sticky-actions"><button class="btn" onclick="checkOrder()">Проверить</button><button class="btn sec" onclick="renderOrder()">Заново</button></div>
+    </section>
+    <section class="sec" id="write">
+      <div class="card"><h2>Напиши предложение</h2><div id="writeBox"></div><div class="score" id="writeScore"></div></div>
+      <div class="sticky-actions"><button class="btn" onclick="checkWrite()">Проверить</button><button class="btn sec" onclick="renderWrite()">Заново</button></div>
+    </section>
+    <section class="sec" id="result"><div class="card"><h2>Итог</h2><div id="resultBox"></div></div></section>`;
+  ['aff','neg','q','be','mixed'].forEach(renderTopic);
+  renderGaps(); renderError(); renderOrder(); renderWrite();
+}
+
+function label(k){
+  return {aff:'Утверждения',neg:'Отрицания',q:'Вопросы',be:'to be',mixed:'Микс'}[k]||k;
+}
+
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.t===id));
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='result') showResult();
+}
+
+function renderTopic(key){
+  const items=DATA[currentTense][key].map((it,i)=>({...it,_i:i,_opts:shuffle(it.opts)}));
+  state[key]={items, answers:{}};
+  const box=document.getElementById(key+'Box');
+  box.innerHTML=items.map((it,idx)=>`
+    <div class="q-item" data-i="${idx}">
+      <div class="q-num">${idx+1}</div>
+      <div class="q-text">${escapeHtml(it.q)}</div>
+      <div class="opts">${it._opts.map(o=>`<button type="button" class="opt" data-v="${escapeHtml(o)}" onclick="selectOpt('${key}',${idx},this)">${escapeHtml(o)}</button>`).join('')}</div>
+      <div class="fb" id="${key}Fb${idx}"></div>
+    </div>`).join('');
+  document.getElementById(key+'Score').textContent='';
+  document.getElementById(key+'Prog').style.width='0';
+}
+
+function selectOpt(key,idx,btn){
+  const st=state[key];
+  if(st.checked) return;
+  st.answers[idx]=btn.dataset.v;
+  btn.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function checkTopic(key){
+  const st=state[key];
+  if(!st) return;
+  st.checked=true;
+  let ok=0;
+  st.items.forEach((it,idx)=>{
+    const ans=st.answers[idx];
+    const fb=document.getElementById(key+'Fb'+idx);
+    const correct=ans===it.a;
+    if(correct) ok++;
+    const item=document.querySelector(`#${key}Box .q-item[data-i="${idx}"]`);
+    item.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=true;
+      if(b.dataset.v===it.a) b.classList.add('ok');
+      else if(b.dataset.v===ans && !correct) b.classList.add('bad');
+    });
+    fb.className='fb '+(correct?'ok':'bad');
+    fb.textContent=correct?'✓ Верно':`✗ ${it.a}`;
+  });
+  const total=st.items.length;
+  document.getElementById(key+'Score').textContent=`${ok} / ${total}`;
+  document.getElementById(key+'Prog').style.width=(ok/total*100)+'%';
+  persist(key,ok,total);
+}
+
+function renderGaps(){
+  const items=DATA[currentTense].gaps.map((g,i)=>({...g,_i:i}));
+  state.gaps={items, answers:{}};
+  document.getElementById('gapsBox').innerHTML=items.map((g,idx)=>{
+    let html=`<div class="q-item"><div class="q-num">${idx+1}</div><div class="gap-wrap">`;
+    g.text.forEach((part,pi)=>{
+      html+=escapeHtml(part);
+      if(pi<g.a.length){
+        const opts=shuffle(g.opts[pi]);
+        html+=`<select data-g="${idx}" data-p="${pi}"><option value="">—</option>${opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('')}</select>`;
+      }
+    });
+    html+=`</div><div class="fb" id="gapsFb${idx}"></div></div>`;
+    return html;
+  }).join('');
+  document.getElementById('gapsScore').textContent='';
+  document.getElementById('gapsProg').style.width='0';
+}
+
+function checkGaps(){
+  const st=state.gaps;
+  let ok=0,total=0;
+  st.items.forEach((g,idx)=>{
+    let all=true;
+    g.a.forEach((ans,pi)=>{
+      total++;
+      const sel=document.querySelector(`select[data-g="${idx}"][data-p="${pi}"]`);
+      const v=sel.value;
+      if(v===ans){ok++;sel.className='ok';}
+      else{all=false;sel.className='bad';}
+      sel.disabled=true;
+    });
+    const fb=document.getElementById('gapsFb'+idx);
+    fb.className='fb '+(all?'ok':'bad');
+    fb.textContent=all?'✓':'✗ '+g.a.join(' / ');
+  });
+  document.getElementById('gapsScore').textContent=`${ok} / ${total}`;
+  document.getElementById('gapsProg').style.width=(total?ok/total*100:0)+'%';
+  persist('gaps',ok,total);
+}
+
+function renderError(){
+  const items=DATA[currentTense].error.map((e,i)=>({...e,_i:i}));
+  state.error={items};
+  document.getElementById('errorBox').innerHTML=items.map((e,idx)=>`
+    <div class="q-item">
+      <div class="q-num">${idx+1}</div>
+      <div class="err-box"><span class="wrong">${escapeHtml(e.wrong)}</span></div>
+      <input type="text" id="errIn${idx}" placeholder="Исправленный вариант" style="width:100%;padding:10px;border:2px solid var(--b);border-radius:8px;background:var(--c);margin-top:6px">
+      <div class="fb" id="errFb${idx}"></div>
+    </div>`).join('');
+  document.getElementById('errorScore').textContent='';
+}
+
+function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[.,!?]/g,'').replace(/\s+/g,' ').trim();}
+function checkError(){
+  const st=state.error; let ok=0;
+  st.items.forEach((e,idx)=>{
+    const v=norm(document.getElementById('errIn'+idx).value);
+    const right=norm(e.right);
+    const good=v===right;
+    if(good) ok++;
+    const fb=document.getElementById('errFb'+idx);
+    fb.className='fb '+(good?'ok':'bad');
+    fb.textContent=good?'✓':e.right;
+    document.getElementById('errIn'+idx).disabled=true;
+  });
+  document.getElementById('errorScore').textContent=`${ok} / ${st.items.length}`;
+  persist('error',ok,st.items.length);
+}
+
+function renderOrder(){
+  const items=DATA[currentTense].order.map((o,i)=>({...o,_i:i, shuffled:shuffle(o.words)}));
+  state.order={items, built:items.map(()=>[])};
+  document.getElementById('orderBox').innerHTML=items.map((o,idx)=>`
+    <div class="q-item">
+      <div class="q-num">${idx+1}</div>
+      <div class="built" id="built${idx}"></div>
+      <div class="order-row" id="chips${idx}">
+        ${o.shuffled.map((w,wi)=>`<button type="button" class="chip" data-w="${escapeHtml(w)}" onclick="tapChip(${idx},this)">${escapeHtml(w)}</button>`).join('')}
+      </div>
+      <button type="button" class="btn sec" onclick="clearOrder(${idx})" style="margin-top:6px">Очистить</button>
+      <div class="fb" id="ordFb${idx}"></div>
+    </div>`).join('');
+  document.getElementById('orderScore').textContent='';
+}
+
+function tapChip(idx,btn){
+  if(state.order.checked) return;
+  if(btn.classList.contains('used')) return;
+  state.order.built[idx].push(btn.dataset.w);
+  btn.classList.add('used');
+  document.getElementById('built'+idx).textContent=state.order.built[idx].join(' ');
+}
+
+function clearOrder(idx){
+  if(state.order.checked) return;
+  state.order.built[idx]=[];
+  document.getElementById('built'+idx).textContent='';
+  document.getElementById('chips'+idx).querySelectorAll('.chip').forEach(c=>c.classList.remove('used'));
+}
+
+function checkOrder(){
+  state.order.checked=true; let ok=0;
+  state.order.items.forEach((o,idx)=>{
+    const got=state.order.built[idx].join(' ');
+    const good=norm(got)===norm(o.answer);
+    if(good) ok++;
+    const fb=document.getElementById('ordFb'+idx);
+    fb.className='fb '+(good?'ok':'bad');
+    fb.textContent=good?'✓':o.answer;
+  });
+  document.getElementById('orderScore').textContent=`${ok} / ${state.order.items.length}`;
+  persist('order',ok,state.order.items.length);
+}
+
+function renderWrite(){
+  const items=DATA[currentTense].write;
+  state.write={items};
+  document.getElementById('writeBox').innerHTML=items.map((w,idx)=>`
+    <div class="q-item">
+      <div class="q-num">${idx+1}</div>
+      <div class="q-text">${escapeHtml(w.prompt)}</div>
+      <input type="text" id="wrIn${idx}" placeholder="На английском…" style="width:100%;padding:10px;border:2px solid var(--b);border-radius:8px;background:var(--c)">
+      <div class="fb" id="wrFb${idx}"></div>
+    </div>`).join('');
+  document.getElementById('writeScore').textContent='';
+}
+
+function checkWrite(){
+  const st=state.write; let ok=0;
+  st.items.forEach((w,idx)=>{
+    const v=norm(document.getElementById('wrIn'+idx).value);
+    const good=w.a.some(a=>norm(a)===v);
+    if(good) ok++;
+    const fb=document.getElementById('wrFb'+idx);
+    fb.className='fb '+(good?'ok':'bad');
+    fb.textContent=good?'✓':w.a[0];
+    document.getElementById('wrIn'+idx).disabled=true;
+  });
+  document.getElementById('writeScore').textContent=`${ok} / ${st.items.length}`;
+  persist('write',ok,st.items.length);
+}
+
+function showResult(){
+  const d=loadStore()[currentTense]||{};
+  const keys=['aff','neg','q','be','gaps','error','order','write','mixed'];
+  let html='<div class="rule"><b>Результаты ('+TENSES[currentTense].title+')</b></div>';
+  let sumOk=0,sumT=0;
+  keys.forEach(k=>{
+    const r=d[k];
+    if(r){sumOk+=r.ok;sumT+=r.total;html+=`<div class="box" style="margin:6px 0"><b>${label(k)||k}</b>: ${r.ok}/${r.total}</div>`;}
+    else html+=`<div class="box" style="margin:6px 0;opacity:.6"><b>${label(k)||k}</b>: ещё не проверено</div>`;
+  });
+  if(sumT) html+=`<div class="score">Всего: ${sumOk} / ${sumT} (${Math.round(sumOk/sumT*100)}%)</div>`;
+  document.getElementById('resultBox').innerHTML=html;
+}
+
+function resetCurrent(){
+  if(!currentTense) return;
+  const d=loadStore();
+  delete d[currentTense];
+  saveStore(d);
+  buildUI();
+  go('theory');
+}
+
+// init
+</script>
+</body>
+</html>
